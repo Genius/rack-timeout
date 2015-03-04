@@ -8,12 +8,14 @@ module Rack
       attr_accessor :timeout
     end
 
+    Error = Class.new(StandardError)
+
     def initialize(app)
       @app = app
     end
 
     def call(env)
-      SystemTimer.timeout(self.class.timeout, ::Timeout::Error) { @app.call(env) }
+      SystemTimer.timeout(self.class.timeout, Error) { @app.call(env) }
     end
 
   end
